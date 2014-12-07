@@ -4,6 +4,7 @@
   "description": "The coffee pot thing.",
   "dependencies": {
     "express": "4.10.2",
-    "socket.io": "1.2.0"
+    "socket.io": "1.2.0",
+    "node-hid": "~0.3.2"
   }
 }

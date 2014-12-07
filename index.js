@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var usb = require('usb');
+var usb = require('node-hid');
 
 app.use('/public', express.static(__dirname + '/public'));
 
@@ -10,15 +10,34 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/index.html');
 });
 
-var scaleDevice = usb.findByIds(0x0922, 0x8004);
-console.log("Scale Device: " + JSON.stringify(scaleDevice));
+// var scaleDevice = usb.findByIds(0x0922, 0x8004);
+// var scaleDevice = new HID.HID()
 
-scaleDevice.open();
-var iface = scaleDevice.interface(0);
-iface.claim();
-var inEndpoint = iface.endpoints[0];
-inEndpoint.transfer(64, function(data, size) {
-	console.log("transfer: " + size);
+var scaleDevice = null;
+
+for(i in usb.devices()) {
+	var d = usb.devices()[i];
+	if(d.vendorId == "2338" && d.productId =="32772") {
+		scaleDevice = d;
+		break;
+	}
+}
+
+if(scaleDevice == null) {
+	throw("No scale found!");
+}
+
+scaleDevice = new usb.HID(scaleDevice.path);
+
+console.log("Scale Device Found: " + JSON.stringify(scaleDevice));
+
+scaleDevice.on("data", function(data) {
+	console.log(JSON.stringify(data));
+	var result = {
+		weight: data[4] + (255*data[5]),
+		on: data[1] == 4 ? 1 : 0
+	}
+	io.emit('measurement', result);
 });
 
 io.on('connection', function(socket){
