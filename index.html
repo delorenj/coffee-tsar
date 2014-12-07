@@ -10,6 +10,7 @@
   <!-- styles -->
   <link href="/public/components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
   <link href="/public/components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
 
   <style type="text/css">
     body {
@@ -19,8 +20,8 @@
 
     h2#weight {
       text-align: center;
-      font-size: 11em;
-      font-family: cursive;
+      font-size: 6em;
+      font-family: "Architects Daughter";
       line-height: 1.3;
     }
 
@@ -80,11 +81,10 @@
 
 <div class="container">
 
-  <h1>Coffee Status</h1>
   <h2 id="weight"><span>We're good</span></h2>
   <div id="coffee-container">
     <div id="pot">
-      <img src="/public/img/zach_pot.png">
+      <img src="/public/img/neutral-face.png">
       <div id="liquid"></div>
     </div>
   </div>
@@ -100,17 +100,26 @@
     }
     var socket = io();
 
+    var min = 14;
+    var max = 75;
+
     socket.on('measurement', function(data) {
       var weight = (data.weight/10).toFixed(2);
       if(weight == 0) {
         $("#weight span").html("Someone Pouring");
-      } else if(weight < 15) {
+        $("#pot img").attr("src", "/public/img/oh-face.png");
+      } else if(weight < min+5) {
         $("#weight span").html("Empty!!");
+        $("#pot img").attr("src", "/public/img/sad-face.png");
+      } else if(weight < max - (max-min)/2) {
+        $("#weight span").html("Good to go");
+        $("#pot img").attr("src", "/public/img/neutral-face.png");
       } else {
         $("#weight span").html("Good to go");
+        $("#pot img").attr("src", "/public/img/happy-face.png");
       }
 
-     var liquidHeight = map(weight, 14, 75, 0, 175);
+     var liquidHeight = map(weight, min, max, 0, 175);
      $("#liquid").css("height", liquidHeight);
     });
 </script>

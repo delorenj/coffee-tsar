@@ -15,8 +15,12 @@ app.get('/', function(req, res){
 
 var scaleDevice = null;
 
+console.log("Scanning for device...");
+console.log(usb.devices().length + " HID devices found");
+
 for(i in usb.devices()) {
 	var d = usb.devices()[i];
+	console.log("Device " + (i+1) + ": " + d.vendorId);
 	if(d.vendorId == "2338" && d.productId =="32772") {
 		scaleDevice = d;
 		break;
@@ -26,6 +30,8 @@ for(i in usb.devices()) {
 if(scaleDevice == null) {
 	throw("No scale found!");
 }
+
+console.log("Creating device...");
 
 scaleDevice = new usb.HID(scaleDevice.path);
 
