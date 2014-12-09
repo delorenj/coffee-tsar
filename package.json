@@ -6,10 +6,10 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "config": "^1.9.0",
     "express": "4.10.2",
-    "debug": "~2.0.0",
-    "socket.io": "1.2.0",
-    "node-hid": "~0.3.2"
+    "node-hid": "~0.3.2",
+    "socket.io": "1.2.0"
   },
   "engine": "0.10.33"
 }
