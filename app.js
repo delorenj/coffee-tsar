@@ -25,7 +25,6 @@ scaleDevice.on("data", function(data) {
 });
 
 io.on('connection', function(socket){
-	console.log("Connected!");
 	socket.on('measurement', function(data) {
 		io.emit('measurement', data);
 	});
