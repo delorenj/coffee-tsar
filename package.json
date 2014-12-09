@@ -2,8 +2,12 @@
   "name": "splash-coffee-tsar",
   "version": "0.0.1",
   "description": "The coffee pot thing.",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "4.10.2",
+    "debug": "~2.0.0",
     "socket.io": "1.2.0",
     "node-hid": "~0.3.2"
   }
