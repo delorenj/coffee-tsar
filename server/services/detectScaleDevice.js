@@ -1,7 +1,8 @@
 "use strict";
-var usb = require("./detectUsbDevices");
+var detect = require("./detectUsbDevices");
+var usb = require('node-hid');
 
-var scaleDevice = usb.findByVendorIdAndProductId("2338", "32772");
+var scaleDevice = detect.findByVendorIdAndProductId("2338", "32772");
 
 if(scaleDevice == null) {
     throw("No scale found!");
