@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 "use strict";
 
-var debug = require("debug")("splash-coffee-tsar");
+var config = require("config");
 var express = require("./app");
-var app = express.app;
-var http = express.http;
+var app = express.app, http = express.http;
 
-app.set("port", 80);
+app.set("port", config.get("port"));
 
 var server = http.listen(app.get("port"), function() {
-    debug("Express server listening on port " + server.address().port);
+    console.log("Express server listening on port " + server.address().port);
 });

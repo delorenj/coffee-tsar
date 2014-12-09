@@ -3,11 +3,12 @@ var app = express();
 var http = require("http").createServer(app);
 var io = require('socket.io')(http);
 var path = require("path");
+var config = require("config");
 
-app.use('/public', express.static(path.join(__dirname, '/public')));
+app.use('/public', express.static(config.get("paths.webroot")));
 
 app.get('/', function(req, res){
-	res.sendFile(path.join(__dirname, '/public/index.html'));
+	res.sendFile(path.join(config.get("paths.webroot"), '/index.html'));
 });
 
 // var scaleDevice = usb.findByIds(0x0922, 0x8004);
